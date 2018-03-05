@@ -7,6 +7,7 @@ package com.appsdeveloperblog.app.ws.service.impl;
 
 import com.appsdeveloperblog.app.ws.service.UsersService;
 import com.appsdeveloperblog.app.ws.shared.dto.UserDTO;
+import com.appsdeveloperblog.app.ws.utils.UserProfileUtils;
 
 /**
  *
@@ -14,13 +15,13 @@ import com.appsdeveloperblog.app.ws.shared.dto.UserDTO;
  */
 public class UsersServiceImpl implements UsersService {
 
-    UserProfileUtils userProfileUtils = newUserProfileUtils();
+    UserProfileUtils userProfileUtils = new UserProfileUtils();
     
     public UserDTO createUser(UserDTO user) {
         UserDTO returnValue = new UserDTO();
         
         //Validate teh required fields
-        
+        userProfileUtils.validateRequiredFields(user);
         
         //Check if user already exists
         
