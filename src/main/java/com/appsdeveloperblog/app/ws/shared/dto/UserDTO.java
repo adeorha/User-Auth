@@ -12,7 +12,7 @@ import java.io.Serializable;
  * @author admin
  */
 public class UserDTO implements Serializable {
-    private static final long serialVersionUID = 1L;
+ //   private static final long serialVersionUID = 1L;
     private long id;
     private String firstName;
     private String lastName;
