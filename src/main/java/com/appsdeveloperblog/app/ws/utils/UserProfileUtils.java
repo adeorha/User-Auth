@@ -5,7 +5,9 @@
  */
 package com.appsdeveloperblog.app.ws.utils;
 
+import com.appsdeveloperblog.app.ws.exceptions.MissingRequiredFieldException;
 import com.appsdeveloperblog.app.ws.shared.dto.UserDTO;
+import com.appsdeveloperblog.app.ws.ui.model.response.ErrorMessages;
 
 /**
  *
