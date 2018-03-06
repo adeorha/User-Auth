@@ -8,9 +8,15 @@ package com.appsdeveloperblog.app.ws.utils;
 import com.appsdeveloperblog.app.ws.exceptions.MissingRequiredFieldException;
 import com.appsdeveloperblog.app.ws.shared.dto.UserDTO;
 import com.appsdeveloperblog.app.ws.ui.model.response.ErrorMessages;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.security.spec.InvalidKeySpecException;
+import java.util.Arrays;
+import java.util.Base64;
 import java.util.Random;
 import java.util.UUID;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 
 /**
  *
@@ -20,6 +26,8 @@ public class UserProfileUtils {
 
     private final Random RANDOM = new SecureRandom();
     private final String ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    private final int ITERATIONS = 10000;
+    private final int KEY_LENGTH = 256;
     
     public String generateUUID() {
         String returnValue = UUID.randomUUID().toString().replaceAll("-", "");
@@ -28,7 +36,7 @@ public class UserProfileUtils {
 
     private String generateRandomString(int length) {
         StringBuilder returnValue = new StringBuilder(length);
-        
+
         for (int i = 0; i < length; i++) {
             returnValue.append(ALPHABET.charAt(RANDOM.nextInt(ALPHABET.length())));
         }
@@ -52,4 +60,35 @@ public class UserProfileUtils {
                     ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
         }
     }
+
+    public String getSalt(int length) {
+        return generateRandomString(length);
+    }
+
+    public String generateSecurePassword(String password, String salt) {
+
+        String returnValue = null;
+
+        byte[] securePassword = hash(password.toCharArray(), salt.getBytes());
+
+        returnValue = Base64.getEncoder().encodeToString(securePassword);
+
+        return returnValue;
+    }
+
+    public byte[] hash(char[] password, byte[] salt) {
+        PBEKeySpec spec = new PBEKeySpec(password, salt, ITERATIONS, KEY_LENGTH);
+        Arrays.fill(password, Character.MIN_VALUE);
+        try {
+            SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+            return skf.generateSecret(spec).getEncoded();
+        } catch (NoSuchAlgorithmException e) {
+            throw new AssertionError("Error while hashing a password: " + e.getMessage(), e);
+        } catch (InvalidKeySpecException e) {
+            throw new AssertionError("Error while hashing a password: " + e.getMessage(), e);
+        } finally {
+            spec.clearPassword();
+        }
+    }
+
 }
