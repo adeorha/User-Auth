@@ -40,19 +40,29 @@ made subject to such option by the copyright holder.
 Contributor(s):
 -->
 <hibernate-configuration>
-  <session-factory>
-    <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-    <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/photo_app?zeroDateTimeBehavior=convertToNull</property>
-    <property name="hibernate.connection.username">aditya</property>
-    <property name="hibernate.connection.password">aditya</property>
+    <session-factory>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</property>
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/photo_app?zeroDateTimeBehavior=convertToNull</property>
+        <property name="hibernate.connection.username">aditya</property>
+        <property name="hibernate.connection.password">aditya</property>
 
-    <property name="hibernate.id.new_generator_mappings">true</property>
-    <property name="show_sql">true</property>
-    <property name="connection.pool_size">10</property>
-    <property name="hibernate.hbm2ddl.auto">update</property>
+        <property name="hibernate.id.new_generator_mappings">false</property>
+        <property name="show_sql">true</property>
+        <property name="connection.pool_size">10</property>
+        <property name="hibernate.hbm2ddl.auto">create</property>
+
+        
+        <property name="hibernate.c3p0.min_size">5</property>
+        <property name="hibernate.c3p0.max_size">25</property>
+        <property name="hibernate.c3p0.timeout">300</property>
+        <property name="hibernate.c3p0.max_statements">50</property>
+        
+        <property name="hibernate.c3p0.idle_test_period">30</property>
+        <property name="hibernate.c3p0.automaticTestTable">conTestTable</property>
+
     
-    <mapping class="com.appsdeveloperblog.app.ws.io.entity.UserEntity"></mapping>
+        <mapping class="com.appsdeveloperblog.app.ws.io.entity.UserEntity"></mapping>
     
-  </session-factory>
+    </session-factory>
 </hibernate-configuration>
