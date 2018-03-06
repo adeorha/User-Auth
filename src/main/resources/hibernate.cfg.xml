@@ -47,10 +47,9 @@ Contributor(s):
         <property name="hibernate.connection.username">aditya</property>
         <property name="hibernate.connection.password">aditya</property>
 
-        <property name="hibernate.id.new_generator_mappings">false</property>
+        <property name="hibernate.id.new_generator_mappings">true</property>
         <property name="show_sql">true</property>
-        <property name="connection.pool_size">10</property>
-        <property name="hibernate.hbm2ddl.auto">create</property>
+        <property name="hibernate.hbm2ddl.auto">update</property>
 
         
         <property name="hibernate.c3p0.min_size">5</property>

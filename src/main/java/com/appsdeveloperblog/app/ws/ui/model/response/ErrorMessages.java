@@ -13,7 +13,8 @@ public enum ErrorMessages {
 
     MISSING_REQUIRED_FIELD("Missing required field. Please check the documentation for the required fields."),
     RECORD_ALREADY_EXISTS("Record already exists"),
-    INTERNAL_SERVER_ERROR("Internal Server Error");
+    INTERNAL_SERVER_ERROR("Internal Server Error"),
+    NO_RECORD_FOUND("The given record was not found");
 
     private String errorMessage;
 

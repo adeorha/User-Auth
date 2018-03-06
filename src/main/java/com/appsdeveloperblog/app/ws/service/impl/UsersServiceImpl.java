@@ -6,6 +6,7 @@
 package com.appsdeveloperblog.app.ws.service.impl;
 
 import com.appsdeveloperblog.app.ws.exceptions.CouldNotCreateRecordException;
+import com.appsdeveloperblog.app.ws.exceptions.NoRecordFoundException;
 import com.appsdeveloperblog.app.ws.io.dao.DAO;
 import com.appsdeveloperblog.app.ws.io.dao.impl.MySQLDAO;
 import com.appsdeveloperblog.app.ws.service.UsersService;
@@ -20,50 +21,60 @@ import com.appsdeveloperblog.app.ws.utils.UserProfileUtils;
 public class UsersServiceImpl implements UsersService {
 
     DAO database;
-    
-    public UsersServiceImpl()
-    {
+
+    public UsersServiceImpl() {
         this.database = new MySQLDAO();
     }
     UserProfileUtils userProfileUtils = new UserProfileUtils();
-    
+
     public UserDTO createUser(UserDTO user) {
         UserDTO returnValue = new UserDTO();
-        
+
         //Validate the required fields
         userProfileUtils.validateRequiredFields(user);
-        
+
         //Check if user already exists
         UserDTO existingUser = this.getUserByUserName(user.getEmail());
-        if(existingUser != null)
-        {
+        if (existingUser != null) {
             throw new CouldNotCreateRecordException(ErrorMessages.RECORD_ALREADY_EXISTS.name());
         }
-        
+
         //Create an Entity object
-        
-        
         //Generated secure public user id
         String userId = userProfileUtils.generateUserId(30);
-        user.setUserId(userId );
-        
+        user.setUserId(userId);
+
         //Generate salt
         String salt = userProfileUtils.getSalt(30);
-        
+
         //Generate secure password
         String encryptedPassword = userProfileUtils.generateSecurePassword(user.getPassword(), salt);
         user.setSalt(salt);
         user.setEncryptedPassword(encryptedPassword);
-        
+
         //Record data into a database
         returnValue = this.saveUser(user);
-        
+
         //Return back the user profile
+        return returnValue;
+    }
+ 
+    public UserDTO getUser(String id) {
+        UserDTO returnValue = null;
+        try {
+            this.database.openConnection();
+            returnValue = this.database.getUser(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new NoRecordFoundException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
+        }finally{
+            this.database.closeConnection();
+        }
         
         return returnValue;
     }
-    
-    private UserDTO getUserByUserName(String userName)
+
+private UserDTO getUserByUserName(String userName)
     {
         UserDTO userDto = null;
         
@@ -93,5 +104,5 @@ public class UsersServiceImpl implements UsersService {
         }        
         return returnValue;
     }
-    
+
 }

@@ -11,8 +11,10 @@ import com.appsdeveloperblog.app.ws.shared.dto.UserDTO;
 import com.appsdeveloperblog.app.ws.ui.model.request.CreateUserRequestModel;
 import com.appsdeveloperblog.app.ws.ui.model.response.UserProfileRest;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import org.springframework.beans.BeanUtils;
@@ -42,4 +44,21 @@ public class UsersEntryPoint {
         BeanUtils.copyProperties(createdUserProfile, returnValue);
         return returnValue;
     }
+    
+    
+    @GET
+    @Path("/{id}")
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public UserProfileRest getUserProfile(@PathParam("id") String id)
+    {
+        UserProfileRest returnValue = null;
+        UsersService userService = new UsersServiceImpl(); //Can use Spring Framework instead of this
+        UserDTO userProfile = userService.getUser(id);
+        
+        returnValue = new UserProfileRest();
+        BeanUtils.copyProperties(userProfile, returnValue);
+        
+        return returnValue;
+    }
+ 
 }
