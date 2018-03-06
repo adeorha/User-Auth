@@ -48,13 +48,15 @@ public class UsersServiceImpl implements UsersService {
         user.setUserId(userId );
         
         //Generate salt
-        
+        String salt = userProfileUtils.getSalt(30);
         
         //Generate secure password
-        
+        String encryptedPassword = userProfileUtils.generateSecurePassword(user.getPassword(), salt);
+        user.setSalt(salt);
+        user.setEncryptedPassword(encryptedPassword);
         
         //Record data into a database
-        
+        returnValue = this.saveUser(user);
         
         //Return back the user profile
         
@@ -77,6 +79,19 @@ public class UsersServiceImpl implements UsersService {
             this.database.closeConnection();
         }        
         return userDto;
+    }
+    
+    private UserDTO saveUser(UserDTO user)
+    {
+        UserDTO returnValue = null;
+        //Connect to database
+        try {
+            this.database.openConnection();
+            returnValue = this.database.saveUser(user);
+        } finally{
+            this.database.closeConnection();
+        }        
+        return returnValue;
     }
     
 }
