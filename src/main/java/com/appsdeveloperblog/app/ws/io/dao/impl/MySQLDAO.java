@@ -9,6 +9,7 @@ import com.appsdeveloperblog.app.ws.io.dao.DAO;
 import com.appsdeveloperblog.app.ws.io.entity.UserEntity;
 import com.appsdeveloperblog.app.ws.shared.dto.UserDTO;
 import com.appsdeveloperblog.app.ws.utils.HibernateUtils;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -106,4 +107,32 @@ public class MySQLDAO implements DAO {
         
     }
 
+    @Override
+    public List<UserDTO> getUsers(int start, int limit) {
+
+        CriteriaBuilder cb = session.getCriteriaBuilder();
+
+        //Create Criteria against a particular persistent class
+        CriteriaQuery<UserEntity> criteria = cb.createQuery(UserEntity.class);
+
+        //Query roots always reference entities
+        Root<UserEntity> userRoot = criteria.from(UserEntity.class);
+        criteria.select(userRoot);
+
+        // Fetch results from start to a number of "limit"
+        List<UserEntity> searchResults = session.createQuery(criteria).
+                setFirstResult(start).
+                setMaxResults(limit).
+                getResultList();
+ 
+        List<UserDTO> returnValue = new ArrayList<UserDTO>();
+        for (UserEntity userEntity : searchResults) {
+            UserDTO userDto = new UserDTO();
+            BeanUtils.copyProperties(userEntity, userDto);
+            returnValue.add(userDto);
+        }
+
+        return returnValue;
+    }
+    
 }

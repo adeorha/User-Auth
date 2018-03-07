@@ -13,6 +13,7 @@ import com.appsdeveloperblog.app.ws.service.UsersService;
 import com.appsdeveloperblog.app.ws.shared.dto.UserDTO;
 import com.appsdeveloperblog.app.ws.ui.model.response.ErrorMessages;
 import com.appsdeveloperblog.app.ws.utils.UserProfileUtils;
+import java.util.List;
 
 /**
  *
@@ -102,6 +103,19 @@ public class UsersServiceImpl implements UsersService {
             this.database.closeConnection();
         }
         return returnValue;
+    }
+
+    public List<UserDTO> getUsers(int start, int limit) {
+        List<UserDTO> users = null;
+        
+        try {
+            this.database.openConnection();
+            users = this.database.getUsers(start, limit);
+        } finally {
+            this.database.closeConnection();
+        }
+        
+        return users;
     }
 
 }
