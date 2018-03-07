@@ -77,13 +77,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         userProfile.setToken(tokenToSaveToDatabase);
         
-        storeAccessToken(userProfile);
+        updateUserProfile(userProfile);
    //     updateUserProfile(userProfile);
         
         return returnValue;
     }
     
-    private void storeAccessToken(UserDTO userProfile)
+    private void updateUserProfile(UserDTO userProfile)
     {
         this.database = new MySQLDAO();
         try{
@@ -93,6 +93,21 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         finally{
             database.closeConnection();
         }
+    }
+
+    
+    public void resetSecurityCredentials(String password, UserDTO userProfile) {
+        //Generate a new salt
+        UserProfileUtils userUtils = new UserProfileUtils();
+        String salt = userUtils.getSalt(30);
+        
+        //Generate a new password
+        String securePassword = userUtils.generateSecurePassword(password, salt);
+        userProfile.setSalt(salt);
+        userProfile.setEncryptedPassword(securePassword);
+        
+        //Update user profile
+        updateUserProfile(userProfile);
     }
 
 }
