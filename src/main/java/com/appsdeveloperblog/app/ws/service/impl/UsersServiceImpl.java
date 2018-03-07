@@ -58,7 +58,7 @@ public class UsersServiceImpl implements UsersService {
         //Return back the user profile
         return returnValue;
     }
- 
+
     public UserDTO getUser(String id) {
         UserDTO returnValue = null;
         try {
@@ -67,41 +67,40 @@ public class UsersServiceImpl implements UsersService {
         } catch (Exception e) {
             e.printStackTrace();
             throw new NoRecordFoundException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
-        }finally{
+        } finally {
             this.database.closeConnection();
         }
-        
+
         return returnValue;
     }
 
-private UserDTO getUserByUserName(String userName)
-    {
+    @Override
+    public UserDTO getUserByUserName(String userName) {
         UserDTO userDto = null;
-        
-        if(userName == null || userName.isEmpty()){
+
+        if (userName == null || userName.isEmpty()) {
             return userDto;
         }
-        
+
         //Connect to database
         try {
             this.database.openConnection();
             userDto = this.database.getUserByUserName(userName);
-        } finally{
+        } finally {
             this.database.closeConnection();
-        }        
+        }
         return userDto;
     }
-    
-    private UserDTO saveUser(UserDTO user)
-    {
+
+    private UserDTO saveUser(UserDTO user) {
         UserDTO returnValue = null;
         //Connect to database
         try {
             this.database.openConnection();
             returnValue = this.database.saveUser(user);
-        } finally{
+        } finally {
             this.database.closeConnection();
-        }        
+        }
         return returnValue;
     }
 

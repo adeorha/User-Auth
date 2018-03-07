@@ -5,14 +5,14 @@
  */
 package com.appsdeveloperblog.app.ws.service;
 
+import com.appsdeveloperblog.app.ws.exceptions.AuthenticationException;
 import com.appsdeveloperblog.app.ws.shared.dto.UserDTO;
 
 /**
  *
  * @author admin
  */
-public interface UsersService {
-    UserDTO createUser(UserDTO user);
-    UserDTO getUser(String id);
-    UserDTO getUserByUserName(String userName);
+public interface AuthenticationService {
+    UserDTO authenticate(String userName, String password) throws AuthenticationException;
+    String issueAccessToken(UserDTO userProfile) throws AuthenticationException;
 }

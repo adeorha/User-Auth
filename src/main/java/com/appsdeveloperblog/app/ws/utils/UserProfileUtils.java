@@ -28,7 +28,7 @@ public class UserProfileUtils {
     private final String ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     private final int ITERATIONS = 10000;
     private final int KEY_LENGTH = 256;
-    
+
     public String generateUUID() {
         String returnValue = UUID.randomUUID().toString().replaceAll("-", "");
         return returnValue;
@@ -89,6 +89,10 @@ public class UserProfileUtils {
         } finally {
             spec.clearPassword();
         }
+    }
+
+    public byte[] encrypt(String securePassword, String accessTokenMaterial) throws InvalidKeySpecException {
+        return hash(securePassword.toCharArray(), accessTokenMaterial.getBytes());
     }
 
 }
