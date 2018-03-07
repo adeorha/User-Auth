@@ -6,6 +6,7 @@
 package com.appsdeveloperblog.app.ws.service.impl;
 
 import com.appsdeveloperblog.app.ws.exceptions.CouldNotCreateRecordException;
+import com.appsdeveloperblog.app.ws.exceptions.CouldNotUpdateRecordException;
 import com.appsdeveloperblog.app.ws.exceptions.NoRecordFoundException;
 import com.appsdeveloperblog.app.ws.io.dao.DAO;
 import com.appsdeveloperblog.app.ws.io.dao.impl.MySQLDAO;
@@ -116,6 +117,18 @@ public class UsersServiceImpl implements UsersService {
         }
         
         return users;
+    }
+
+    public void updateUserDetails(UserDTO userDetails) {
+        try {
+            this.database.openConnection();
+            this.database.updateUser(userDetails);
+        } catch (Exception e) {
+            throw new CouldNotUpdateRecordException(e.getMessage());
+        } finally {
+            this.database.closeConnection();
+        }
+        
     }
 
 }

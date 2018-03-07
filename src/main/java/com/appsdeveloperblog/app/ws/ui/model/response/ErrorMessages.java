@@ -15,7 +15,8 @@ public enum ErrorMessages {
     RECORD_ALREADY_EXISTS("Record already exists"),
     INTERNAL_SERVER_ERROR("Internal Server Error"),
     NO_RECORD_FOUND("The given record was not found"),
-    AUTHENTICATION_FAILED("The username or password was incorrect");
+    AUTHENTICATION_FAILED("The username or password was incorrect"),
+    COULD_NOT_UPDATE_RECORD("Could not update the record");
 
     private String errorMessage;
 
