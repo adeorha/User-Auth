@@ -5,6 +5,7 @@
  */
 package com.appsdeveloperblog.app.ws.ui.entrypoints;
 
+import com.appsdeveloperblog.app.ws.annotations.Secured;
 import com.appsdeveloperblog.app.ws.service.UsersService;
 import com.appsdeveloperblog.app.ws.service.impl.UsersServiceImpl;
 import com.appsdeveloperblog.app.ws.shared.dto.UserDTO;
@@ -45,7 +46,7 @@ public class UsersEntryPoint {
         return returnValue;
     }
     
-    
+    @Secured
     @GET
     @Path("/{id}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})

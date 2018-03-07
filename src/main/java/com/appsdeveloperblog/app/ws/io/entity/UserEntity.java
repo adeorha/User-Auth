@@ -27,6 +27,7 @@ public class UserEntity implements Serializable{
     private String email;
     private String salt;
     private String encryptedPassword;
+    private String token;
 
     /**
      * @return the id
@@ -124,5 +125,19 @@ public class UserEntity implements Serializable{
      */
     public void setEncryptedPassword(String encryptedPassword) {
         this.encryptedPassword = encryptedPassword;
+    }
+
+    /**
+     * @return the token
+     */
+    public String getToken() {
+        return token;
+    }
+
+    /**
+     * @param token the token to set
+     */
+    public void setToken(String token) {
+        this.token = token;
     }
 }
