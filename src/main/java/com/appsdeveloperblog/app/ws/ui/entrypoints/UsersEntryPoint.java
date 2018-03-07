@@ -11,10 +11,14 @@ import com.appsdeveloperblog.app.ws.service.impl.UsersServiceImpl;
 import com.appsdeveloperblog.app.ws.shared.dto.UserDTO;
 import com.appsdeveloperblog.app.ws.ui.model.request.CreateUserRequestModel;
 import com.appsdeveloperblog.app.ws.ui.model.request.UpdateUserRequestModel;
+import com.appsdeveloperblog.app.ws.ui.model.response.DeleteUserProfileResponseModel;
+import com.appsdeveloperblog.app.ws.ui.model.response.RequestOperation;
+import com.appsdeveloperblog.app.ws.ui.model.response.ResponseStatus;
 import com.appsdeveloperblog.app.ws.ui.model.response.UserProfileRest;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -111,8 +115,8 @@ public class UsersEntryPoint {
 
         return returnValue;
     }
-/*
-    @Secured
+
+//    @Secured
     @DELETE
     @Path("/{id}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -120,6 +124,7 @@ public class UsersEntryPoint {
         DeleteUserProfileResponseModel returnValue = new DeleteUserProfileResponseModel();
         returnValue.setRequestOperation(RequestOperation.DELETE);
 
+        UsersService userService = new UsersServiceImpl();
         UserDTO storedUserDetails = userService.getUser(id);
 
         userService.deleteUser(storedUserDetails);
@@ -128,5 +133,5 @@ public class UsersEntryPoint {
 
         return returnValue;
     }
-*/
+
 }

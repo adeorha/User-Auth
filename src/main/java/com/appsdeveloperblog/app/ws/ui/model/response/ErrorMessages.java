@@ -16,7 +16,8 @@ public enum ErrorMessages {
     INTERNAL_SERVER_ERROR("Internal Server Error"),
     NO_RECORD_FOUND("The given record was not found"),
     AUTHENTICATION_FAILED("The username or password was incorrect"),
-    COULD_NOT_UPDATE_RECORD("Could not update the record");
+    COULD_NOT_UPDATE_RECORD("Could not update the record"),
+    COULD_NOT_DELETE_RECORD("Could not delete the record");
 
     private String errorMessage;
 

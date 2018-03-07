@@ -16,11 +16,11 @@ import javax.ws.rs.ext.Provider;
  * @author admin
  */
 @Provider
-public class CouldNotUpdateRecordExceptionMapper implements ExceptionMapper<CouldNotUpdateRecordException>{
-    public Response toResponse(CouldNotUpdateRecordException exception) {
+public class CouldNotDeleteRecordExceptionMapper implements ExceptionMapper<CouldNotDeleteRecordException>{
+    public Response toResponse(CouldNotDeleteRecordException exception) {
         ErrorMessage errorMessage = new ErrorMessage(exception.getMessage(),
-        ErrorMessages.COULD_NOT_DELETE_RECORD.name(),
+        ErrorMessages.COULD_NOT_UPDATE_RECORD.name(),
         "www.google.com");
-        return Response.status(Response.Status.BAD_REQUEST).entity(errorMessage).build();
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorMessage).build();
     }
 }

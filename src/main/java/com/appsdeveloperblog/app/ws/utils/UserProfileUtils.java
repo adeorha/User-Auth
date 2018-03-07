@@ -55,7 +55,7 @@ public class UserProfileUtils {
                 || userDto.getEmail() == null
                 || userDto.getEmail().isEmpty()
                 || userDto.getPassword() == null
-                || userDto.getPassword().length() < 6) {
+                || userDto.getPassword().length() < 1) {
             throw new MissingRequiredFieldException(
                     ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
         }
