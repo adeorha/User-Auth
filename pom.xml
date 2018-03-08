@@ -59,11 +59,12 @@
             <artifactId>spring-beans</artifactId>
             <version>5.0.4.RELEASE</version>
         </dependency>
-        <dependency>
+        
+        <!--        <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
             <version>4.3.1.Final</version>
-        </dependency>
+        </dependency>-->
         
         <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-c3p0 -->
         <dependency>
@@ -71,6 +72,14 @@
             <artifactId>hibernate-c3p0</artifactId>
             <version>5.2.14.Final</version>
         </dependency>
+        
+        <!-- https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-ses -->
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-ses</artifactId>
+            <version>1.11.290</version>
+        </dependency>
+
 
     </dependencies>
     <build>

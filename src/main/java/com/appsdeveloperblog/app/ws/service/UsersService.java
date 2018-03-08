@@ -19,4 +19,5 @@ public interface UsersService {
     List<UserDTO> getUsers(int start, int limit);
     void updateUserDetails(UserDTO userDetails);
     void deleteUser(UserDTO userDto);
+    boolean verifyEmail(String token);
 }

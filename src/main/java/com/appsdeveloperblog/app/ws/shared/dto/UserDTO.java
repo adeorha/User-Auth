@@ -23,7 +23,8 @@ public class UserDTO implements Serializable {
     private String encryptedPassword;
     private String userId;
     private String token;
-
+    private String emailVerificationToken;
+    private Boolean emailVerificationStatus;
     /**
      * @return the id
      */
@@ -148,5 +149,33 @@ public class UserDTO implements Serializable {
      */
     public void setToken(String token) {
         this.token = token;
+    }
+
+    /**
+     * @return the emailVerificationToken
+     */
+    public String getEmailVerificationToken() {
+        return emailVerificationToken;
+    }
+
+    /**
+     * @param emailVerificationToken the emailVerificationToken to set
+     */
+    public void setEmailVerificationToken(String emailVerificationToken) {
+        this.emailVerificationToken = emailVerificationToken;
+    }
+
+    /**
+     * @return the emailVerificationStatus
+     */
+    public Boolean getEmailVerificationStatus() {
+        return emailVerificationStatus;
+    }
+
+    /**
+     * @param emailVerificationStatus the emailVerificationStatus to set
+     */
+    public void setEmailVerificationStatus(Boolean emailVerificationStatus) {
+        this.emailVerificationStatus = emailVerificationStatus;
     }
 }

@@ -47,6 +47,10 @@ public class UserProfileUtils {
         return generateRandomString(length);
     }
 
+    public String generateEmailVerificationToken(int length) {
+        return generateRandomString(length);
+    }
+
     public void validateRequiredFields(UserDTO userDto) throws MissingRequiredFieldException {
         if (userDto.getFirstName() == null
                 || userDto.getFirstName().isEmpty()

@@ -8,12 +8,14 @@ package com.appsdeveloperblog.app.ws.service.impl;
 import com.appsdeveloperblog.app.ws.exceptions.CouldNotCreateRecordException;
 import com.appsdeveloperblog.app.ws.exceptions.CouldNotDeleteRecordException;
 import com.appsdeveloperblog.app.ws.exceptions.CouldNotUpdateRecordException;
+import com.appsdeveloperblog.app.ws.exceptions.EmailVerificationException;
 import com.appsdeveloperblog.app.ws.exceptions.NoRecordFoundException;
 import com.appsdeveloperblog.app.ws.io.dao.DAO;
 import com.appsdeveloperblog.app.ws.io.dao.impl.MySQLDAO;
 import com.appsdeveloperblog.app.ws.service.UsersService;
 import com.appsdeveloperblog.app.ws.shared.dto.UserDTO;
 import com.appsdeveloperblog.app.ws.ui.model.response.ErrorMessages;
+import com.appsdeveloperblog.app.ws.utils.AmazonSES;
 import com.appsdeveloperblog.app.ws.utils.UserProfileUtils;
 import java.util.List;
 
@@ -54,10 +56,13 @@ public class UsersServiceImpl implements UsersService {
         String encryptedPassword = userProfileUtils.generateSecurePassword(user.getPassword(), salt);
         user.setSalt(salt);
         user.setEncryptedPassword(encryptedPassword);
+        user.setEmailVerificationStatus(Boolean.FALSE);
+        user.setEmailVerificationToken(userProfileUtils.generateEmailVerificationToken(30));
 
         //Record data into a database
         returnValue = this.saveUser(user);
 
+        new AmazonSES().verifyEmail(user);
         //Return back the user profile
         return returnValue;
     }
@@ -142,7 +147,7 @@ public class UsersServiceImpl implements UsersService {
             this.database.closeConnection();
         }
 
-               // Verify that user is deleted
+        // Verify that user is deleted
         try {
             userDto = getUser(userDto.getUserId());
         } catch (NoRecordFoundException ex) {
@@ -155,4 +160,46 @@ public class UsersServiceImpl implements UsersService {
         }
     }
 
+    @Override
+    public boolean verifyEmail(String token) {
+        boolean returnValue = false;
+
+        if (token == null || token.isEmpty()) {
+            throw new EmailVerificationException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
+        }
+
+        try {
+
+            UserDTO storedUserRecord = getUserByEmailToken(token);
+
+            if (storedUserRecord == null) {
+                return returnValue;
+            }
+
+            // Update user Reccord
+            storedUserRecord.setEmailVerificationStatus(true);
+            storedUserRecord.setEmailVerificationToken(null);
+
+            updateUserDetails(storedUserRecord);
+
+            returnValue = true;
+
+        } catch (Exception ex) {
+            throw new EmailVerificationException(ex.getMessage());
+        }
+
+        return returnValue;
+    }
+    
+    private UserDTO getUserByEmailToken(String token){
+       UserDTO returnValue = null;
+        try {
+            this.database.openConnection();
+            returnValue = this.database.getUserByEmailToken(token);
+        } finally {
+            this.database.closeConnection();
+        }
+
+        return returnValue;
+    }
 }

@@ -20,6 +20,7 @@ public interface DAO {
     List<UserDTO> getUsers(int start, int limit);
     void updateUser(UserDTO userProfile);
     void deleteUser(UserDTO userProfile);
+    UserDTO getUserByEmailToken(String token);
     void closeConnection();
 
 }

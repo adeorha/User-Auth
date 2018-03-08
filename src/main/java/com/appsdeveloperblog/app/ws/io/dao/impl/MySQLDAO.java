@@ -67,13 +67,13 @@ public class MySQLDAO implements DAO {
         Root<UserEntity> profileRoot = criteria.from(UserEntity.class);
         criteria.select(profileRoot);
         criteria.where(cb.equal(profileRoot.get("userId"), id));
-        
+
         //Fetch single result
         UserEntity userEntity = session.createQuery(criteria).getSingleResult();
-        
+
         UserDTO userDto = new UserDTO();
         BeanUtils.copyProperties(userEntity, userDto);
-        
+
         return userDto;
     }
 
@@ -100,11 +100,11 @@ public class MySQLDAO implements DAO {
     public void updateUser(UserDTO userProfile) {
         UserEntity userEntity = new UserEntity();
         BeanUtils.copyProperties(userProfile, userEntity);
-        
+
         session.beginTransaction();
         session.update(userEntity);
         session.getTransaction().commit();
-        
+
     }
 
     @Override
@@ -124,7 +124,7 @@ public class MySQLDAO implements DAO {
                 setFirstResult(start).
                 setMaxResults(limit).
                 getResultList();
- 
+
         List<UserDTO> returnValue = new ArrayList<UserDTO>();
         for (UserEntity userEntity : searchResults) {
             UserDTO userDto = new UserDTO();
@@ -139,10 +139,36 @@ public class MySQLDAO implements DAO {
     public void deleteUser(UserDTO userProfile) {
         UserEntity userEntity = new UserEntity();
         BeanUtils.copyProperties(userProfile, userEntity);
-        
+
         session.beginTransaction();
         session.delete(userEntity);
         session.getTransaction().commit();
     }
-    
+
+    @Override
+    public UserDTO getUserByEmailToken(String token) {
+        UserDTO userDto = null;
+
+        CriteriaBuilder cb = session.getCriteriaBuilder();
+
+        //Create Criteria against a particular persistent class
+        CriteriaQuery<UserEntity> criteria = cb.createQuery(UserEntity.class);
+
+        //Query roots always reference entity
+        Root<UserEntity> profileRoot = criteria.from(UserEntity.class);
+        criteria.select(profileRoot);
+        criteria.where(cb.equal(profileRoot.get("emailVerificationToken"), token));
+
+        //Fetch single result
+        Query<UserEntity> query = session.createQuery(criteria);
+        List<UserEntity> resultList = query.getResultList();
+        if (resultList != null && resultList.size() > 0) {
+            UserEntity userEntity = resultList.get(0);
+            userDto = new UserDTO();
+            BeanUtils.copyProperties(userEntity, userDto);
+        }
+
+        return userDto;
+    }
+
 }

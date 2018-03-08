@@ -6,6 +6,7 @@
 package com.appsdeveloperblog.app.ws.service.impl;
 
 import com.appsdeveloperblog.app.ws.exceptions.AuthenticationException;
+import com.appsdeveloperblog.app.ws.exceptions.EmailVerificationException;
 import com.appsdeveloperblog.app.ws.io.dao.DAO;
 import com.appsdeveloperblog.app.ws.io.dao.impl.MySQLDAO;
 import com.appsdeveloperblog.app.ws.service.AuthenticationService;
@@ -33,6 +34,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (storedUser == null) {
             throw new AuthenticationException(ErrorMessages.AUTHENTICATION_FAILED.getErrorMessage());
         }
+        
+        if(!storedUser.getEmailVerificationStatus()){
+            throw new EmailVerificationException(ErrorMessages.EMAIL_ADDRESS_NOT_VERIFIED.getErrorMessage());            
+        }
+        
         String encryptedPassword = null;
 
         encryptedPassword = new UserProfileUtils().generateSecurePassword(password, storedUser.getSalt());

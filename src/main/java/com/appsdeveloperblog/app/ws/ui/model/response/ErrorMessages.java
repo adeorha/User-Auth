@@ -17,7 +17,8 @@ public enum ErrorMessages {
     NO_RECORD_FOUND("The given record was not found"),
     AUTHENTICATION_FAILED("The username or password was incorrect"),
     COULD_NOT_UPDATE_RECORD("Could not update the record"),
-    COULD_NOT_DELETE_RECORD("Could not delete the record");
+    COULD_NOT_DELETE_RECORD("Could not delete the record"),
+    EMAIL_ADDRESS_NOT_VERIFIED("Email address wasn't verified");
 
     private String errorMessage;
 

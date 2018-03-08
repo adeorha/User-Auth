@@ -6,6 +6,7 @@
 package com.appsdeveloperblog.app.ws.io.entity;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -28,6 +29,11 @@ public class UserEntity implements Serializable{
     private String salt;
     private String encryptedPassword;
     private String token;
+    
+    private String emailVerificationToken;
+    
+    @Column(nullable = false, columnDefinition = "boolean default false")
+    private Boolean emailVerificationStatus;
 
     /**
      * @return the id
@@ -139,5 +145,33 @@ public class UserEntity implements Serializable{
      */
     public void setToken(String token) {
         this.token = token;
+    }
+
+    /**
+     * @return the emailVerificationtoken
+     */
+    public String getEmailVerificationToken() {
+        return emailVerificationToken;
+    }
+
+    /**
+     * @param emailVerificationtoken the emailVerificationtoken to set
+     */
+    public void setEmailVerificationToken(String emailVerificationToken) {
+        this.emailVerificationToken = emailVerificationToken;
+    }
+
+    /**
+     * @return the emailVerificationStatus
+     */
+    public Boolean getEmailVerificationStatus() {
+        return emailVerificationStatus;
+    }
+
+    /**
+     * @param emailVerificationStatus the emailVerificationStatus to set
+     */
+    public void setEmailVerificationStatus(Boolean emailVerificationStatus) {
+        this.emailVerificationStatus = emailVerificationStatus;
     }
 }
