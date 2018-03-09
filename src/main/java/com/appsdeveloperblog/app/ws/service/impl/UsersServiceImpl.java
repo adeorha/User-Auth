@@ -27,13 +27,13 @@ public class UsersServiceImpl implements UsersService {
 
     DAO database;
 
-    public UsersServiceImpl() {
-        this.database = new MySQLDAO();
+    public UsersServiceImpl(DAO database) {
+        this.database = database;
     }
     UserProfileUtils userProfileUtils = new UserProfileUtils();
 
     public UserDTO createUser(UserDTO user) {
-        UserDTO returnValue = new UserDTO();
+        UserDTO returnValue = null;
 
         //Validate the required fields
         userProfileUtils.validateRequiredFields(user);

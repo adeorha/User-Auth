@@ -18,6 +18,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -25,10 +26,12 @@ import java.util.logging.Logger;
  */
 public class AuthenticationServiceImpl implements AuthenticationService {
 
+    @Autowired
+    UsersService usersService;       
     DAO database;
     
     public UserDTO authenticate(String userName, String password) throws AuthenticationException {
-        UsersService usersService = new UsersServiceImpl();
+//        UsersService usersService = new UsersServiceImpl();
         UserDTO storedUser = usersService.getUserByUserName(userName);
 
         if (storedUser == null) {

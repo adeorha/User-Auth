@@ -29,6 +29,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -37,6 +38,8 @@ import org.springframework.beans.BeanUtils;
 @Path("/users")
 public class UsersEntryPoint {
 
+    @Autowired
+    UsersService userService;
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -48,7 +51,6 @@ public class UsersEntryPoint {
         BeanUtils.copyProperties(requestObject, userDto);
 
         //Create new user
-        UsersService userService = new UsersServiceImpl(); //Can use Spring Framework instead of this
         UserDTO createdUserProfile = userService.createUser(userDto);
 
         //Prepare response
@@ -62,7 +64,6 @@ public class UsersEntryPoint {
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public UserProfileRest getUserProfile(@PathParam("id") String id) {
         UserProfileRest returnValue = null;
-        UsersService userService = new UsersServiceImpl(); //Can use Spring Framework instead of this
         UserDTO userProfile = userService.getUser(id);
 
         returnValue = new UserProfileRest();
@@ -76,7 +77,6 @@ public class UsersEntryPoint {
     public List<UserProfileRest> getUsers(@DefaultValue("0") @QueryParam("start") int start,
             @DefaultValue("50") @QueryParam("limit") int limit) {
 
-        UsersService userService = new UsersServiceImpl();
         List<UserDTO> users = userService.getUsers(start, limit);
 
         List<UserProfileRest> returnValue = new ArrayList<UserProfileRest>();
@@ -97,7 +97,6 @@ public class UsersEntryPoint {
     public UserProfileRest updateUserDetails(@PathParam("id") String id,
             UpdateUserRequestModel userDetails) {
 
-        UsersService userService = new UsersServiceImpl();
         UserDTO storedUserDetails = userService.getUser(id);
 
         // Set only those fields you would like to be updated with this request
@@ -124,7 +123,6 @@ public class UsersEntryPoint {
         DeleteUserProfileResponseModel returnValue = new DeleteUserProfileResponseModel();
         returnValue.setRequestOperation(RequestOperation.DELETE);
 
-        UsersService userService = new UsersServiceImpl();
         UserDTO storedUserDetails = userService.getUser(id);
 
         userService.deleteUser(storedUserDetails);

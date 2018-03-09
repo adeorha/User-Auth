@@ -33,6 +33,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Priority(Priorities.AUTHENTICATION)
 public class AuthenticationFilter implements ContainerRequestFilter {
 
+    @Autowired
+    UsersService usersService;
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
         // Extract Authorization header details
@@ -55,7 +57,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     private void validateToken(String token, String userId) throws AuthenticationException {
 
         // Get user profile details
-        UsersService usersService = new UsersServiceImpl();
+//        UsersService usersService = new UsersServiceImpl();
         UserDTO userProfile = usersService.getUser(userId);
 
         // Asseble Access token using two parts. One from DB and one from http request.
