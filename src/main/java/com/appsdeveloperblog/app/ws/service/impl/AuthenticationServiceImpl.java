@@ -26,9 +26,13 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class AuthenticationServiceImpl implements AuthenticationService {
 
-    @Autowired
     UsersService usersService;       
     DAO database;
+    
+    public AuthenticationServiceImpl(UsersService usersService)
+    {
+        this.usersService = usersService;
+    }
     
     public UserDTO authenticate(String userName, String password) throws AuthenticationException {
 //        UsersService usersService = new UsersServiceImpl();

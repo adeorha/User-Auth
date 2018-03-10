@@ -15,6 +15,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -23,6 +24,8 @@ import javax.ws.rs.core.MediaType;
 @Path("/authentication")
 
 public class AuthenticationEntryPoint {
+    @Autowired
+    AuthenticationService authenticationService;
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -30,7 +33,7 @@ public class AuthenticationEntryPoint {
     {
         AuthenticationDetails returnValue = new AuthenticationDetails();
         
-        AuthenticationService authenticationService = new AuthenticationServiceImpl();
+//        AuthenticationService authenticationService = new AuthenticationServiceImpl();
         UserDTO authenticatedUser = authenticationService.authenticate(loginCredentials.getUserName(), loginCredentials.getUserPassword());
         
         //Reset Access Token
